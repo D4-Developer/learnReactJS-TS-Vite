@@ -1,0 +1,77 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Inter;
+  background: #282D35;
+}
+
+.nav {
+  display: flex;
+  height: 90px;
+  background: #21222A;
+  justify-content: space-between;
+  align-items: center;
+  padding: 26px;
+  color: white;
+}
+
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.nav-logo {
+  width: 30px;
+}
+
+.nav-logo-text {
+  color: #61DAFB;
+}
+
+/* 
+Challenge: Place the gray react logo in the background
+
+Don't use an `img` element, but rather set it as the
+`background-image` of the `main` element.
+
+Hint: you'll need to use the following properties:
+- background-image
+- background-repeat
+- background-position
+
+(Or the shorthand `background` property with values for all
+those other properties)
+*/
+
+main {
+  padding: 52px 26px;
+  color: white;
+}
+
+ul {
+  max-width: 400px;
+}
+
+.main-content {
+  background: no-repeat url(./images/react-icon-large.png);
+  background-position: right 70%;
+}
+
+.main-content h1 {
+  margin: 0;
+  font-size: 40px;
+  letter-spacing: -0.05em;
+}
+
+.main-content ul li {
+  line-height: 2
+}
+
+.main-content ul li::marker {
+  color: #61DAFB;
+  font-size: 24px;
+}
