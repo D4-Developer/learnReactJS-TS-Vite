@@ -5,14 +5,21 @@ export default function Card(props: {
   location: string
   title: string,
   price: number,
+  openSpots: number
 }): React.ReactNode {
+  let badgeText: string | undefined = undefined;
+  if (props.openSpots === 0) {
+    badgeText = "SOLD OUT"
+  } else if (props.location === "Online") {
+    badgeText = "ONLINE"
+  }
+
   return (
     <section className="card">
-
       <div className="card-img-container">
         <div>
           <img className="img" src={`./src/module2/assets/${props.img}`} />
-          <div className="card-status"><span>SOLD OUT</span></div>
+          {badgeText !== undefined && <div className="card-status"><span>{badgeText}</span></div>}
         </div>
       </div>
 
