@@ -16,19 +16,24 @@
   padding: 24px 80px;
   display: flex;
   flex-direction: column;
+
+  .hero-img {  
+    min-width: 400px;
+    max-width: 1000px;
+    align-self: center;
+  }
+
+  .hero-header {
+    font-size: 36px;
+    margin-bottom: 16px;
+  }
+
+  .hero-text {
+    font-weight: 300;
+  }
+  
 }
 
-.hero-img {  
-  min-width: 400px;
-  max-width: 1000px;
-  align-self: center;
+
 }
 
-.hero-header {
-  font-size: 36px;
-  margin-bottom: 16px;
-}
-
-.hero-text {
-  font-weight: 300;
-}
