@@ -1,6 +1,6 @@
 import heroImg from '../assets/photo-grid.png'
 
-export default function Hero() {
+export default function Hero(): React.ReactNode {
 	return (
 		<section className="hero">
 			<img className="hero-img" src={heroImg} />
