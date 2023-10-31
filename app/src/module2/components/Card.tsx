@@ -1,6 +1,3 @@
-import cardImg from '../assets/katie-zaferes.png'
-import starImg from '../assets/star.png'
-
 /*
 Challenge: Build the Card component
 For now, hard-code in the data (like 
@@ -27,13 +24,13 @@ export default function Card(): React.ReactNode {
 
       <div className="card-img-container">
         <div>
-          <img className="img" src={cardImg} />
+          <img className="img" src="./src/module2/assets/katie-zaferes.png" />
           <div className="card-status"><span>SOLD OUT</span></div>
         </div>
       </div>
 
       <div className="card-text-container" >
-        <img className="star-img" src={starImg} />
+        <img className="star-img" src="./src/module2/assets/star.png" />
         <span> 5.0 </span>
         <span>(6) · USA</span>
         <div className="card-text-title">Life lessons with Katie Zaferes</div>
