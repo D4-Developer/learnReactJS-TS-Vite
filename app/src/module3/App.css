@@ -1,5 +1,5 @@
 #root {
-  font-family: Poppins;
+  font-family: "Karla", sans-serif;
 }
 
 .nav {
@@ -23,5 +23,29 @@
 
   .nav-slogan {
     padding-right: 32px;
+  }
+}
+
+.form {
+  margin: 32px;
+  display: grid;
+  gap: 16px;
+  grid-template: 40px 40px / 1fr 1fr;
+
+  >* {
+    border: 1px solid #D5D4D8;
+    border-radius: 5px;
+    font-family: "Karla", sans-serif;
+  }
+
+  >input {
+    padding: 8px;
+  }
+
+  .form-btn {
+    grid-column: 1 / -1;
+    color: #FFF;
+    background: linear-gradient(90deg, #672280 1.18%, #A626D3 100%);
+    border: none;
   }
 }

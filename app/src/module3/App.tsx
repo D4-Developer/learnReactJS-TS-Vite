@@ -1,12 +1,21 @@
 import Navbar from './components/Navbar';
+import Form from './components/form';
 
 import './App.css'
 
 /**
-	Challenge: Build the Header component
-*/
+ * Challenge: 
+ * - Create a Meme component.
+ * - Inside the Meme component, render a styled form
+ *   with our 2 inputs and the button.
+ * - Don't worry about adding any functionality yet
+ */
+
 export default function App(): React.ReactNode {
 	return (
-		<Navbar />
+		<>
+			<Navbar />
+			<Form />
+		</>
 	);
 }
