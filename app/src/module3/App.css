@@ -1,3 +1,27 @@
 #root {
   font-family: Poppins;
 }
+
+.nav {
+  height: 65px;
+  display: flex;
+  padding: 20px;
+  color: #FFF;
+  background: linear-gradient(90deg, #672280 1.18%, #A626D3 100%);
+  justify-content: space-between;
+
+  .identity {
+    display: flex;
+
+    .identity-text {
+      font-size: 20.748px;
+      padding-left: 7px;
+      align-self: center;
+      font-weight: 700;
+    }
+  }
+
+  .nav-slogan {
+    padding-right: 32px;
+  }
+}
