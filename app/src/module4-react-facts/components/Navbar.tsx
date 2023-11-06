@@ -1,4 +1,6 @@
-export default function Navbar(props: { darkMode: boolean }) {
+import { MouseEventHandler } from "react";
+
+export default function Navbar(props: { darkMode: boolean, toggleDarkMode: MouseEventHandler<HTMLDivElement> }) {
 	return (
 		<nav className={props.darkMode ? "nav dark" : "nav"}>
 			<div className="nav-left">
