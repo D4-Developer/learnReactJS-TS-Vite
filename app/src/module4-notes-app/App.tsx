@@ -34,7 +34,7 @@ export default function App(): React.ReactNode {
         body: string
     } = notes.find(note => note.id === currentNoteId) || notes[0]
 
-    function createNewNote() {
+    function createNewNote(): void {
         const newNote: {
             id: string,
             body: string
@@ -46,14 +46,23 @@ export default function App(): React.ReactNode {
         setCurrentNoteId(newNote.id)
     }
 
-    function updateNote(text: string) {
-        console.log(text);
+    function updateNote(text: string): void {
+        setNotes(oldNotes => {
+            const index = notes.findIndex(note => {
+                return note.id === currentNoteId
+            });
 
-        setNotes((oldNotes) => oldNotes.map((oldNote) => {
-            return oldNote.id === currentNoteId
-                ? { ...oldNote, body: text }
-                : oldNote
-        }))
+            const newNote = {
+                id: currentNote.id,
+                body: text
+            }
+
+            if (index == 0) {
+                return [newNote, ...oldNotes.slice(index + 1)];
+            } else {
+                return [newNote, ...oldNotes.slice(0, index), ...oldNotes.slice(index + 1)];
+            }
+        });
     }
 
     return (
