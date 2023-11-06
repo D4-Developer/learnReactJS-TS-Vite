@@ -65,6 +65,20 @@ export default function App(): React.ReactNode {
         });
     }
 
+    function deleteNote(event: React.MouseEvent<HTMLButtonElement, MouseEvent>, noteId: string): void {
+        event.stopPropagation();
+        setNotes(oldNotes => oldNotes.filter(note => note.id !== noteId));
+
+        // 2nd approach is:
+
+        // setNotes((oldNotes) => {
+        //     const delIndex = oldNotes.findIndex((note) =>
+        //         note.id === noteId
+        //     );
+        //     return oldNotes.toSpliced(delIndex, 1);
+        // });
+    }
+
     return (
         <main>
             {
@@ -80,6 +94,7 @@ export default function App(): React.ReactNode {
                             currentNote={currentNote}
                             setCurrentNoteId={setCurrentNoteId}
                             newNote={createNewNote}
+                            deleteNote={deleteNote}
                         />
                         {
                             currentNoteId &&
