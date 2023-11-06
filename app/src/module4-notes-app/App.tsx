@@ -7,11 +7,9 @@ import Sidebar from "./components/Sidebar"
 import Editor from "./components/Editor"
 
 /**
- * Challenge: Spend 10-20+ minutes reading through the code
- * and trying to understand how it's currently working. Spend
- * as much time as you need to feel confident that you 
- * understand the existing code (although you don't need
- * to fully understand everything to move on)
+ * Challenge: Try to figure out a way to display only the 
+ * first line of note.body as the note summary in the
+ * sidebar.
  */
 
 export default function App(): React.ReactNode {
