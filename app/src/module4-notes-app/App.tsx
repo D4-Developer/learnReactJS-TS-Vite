@@ -16,7 +16,9 @@ export default function App(): React.ReactNode {
         updatedAt: number;
     }[] | [], Dispatch<SetStateAction<{
         id: string;
-        body: string
+        body: string;
+        createdAt: number;
+        updatedAt: number;
     }[]>> | Dispatch<SetStateAction<[]>>] = React.useState([]);
 
     const [currentNoteId, setCurrentNoteId]: [string, Dispatch<SetStateAction<string>>] = React.useState("");
@@ -24,20 +26,20 @@ export default function App(): React.ReactNode {
     console.log(currentNoteId);
 
     React.useEffect(() => {
-        const unSubscribe = onSnapshot(notesCollection, function (snapshot: QuerySnapshot<DocumentData, DocumentData>) {
-            // Sync up our local notes array with the snapshot data
-
-            const notesArr = snapshot.docs.map((doc) => ({
-                body: doc.data().body,
-                id: doc.id
-            }));
-
-            console.log(notesArr);
-
-
-            setNotes(notesArr);
-        })
-
+        const unSubscribe = onSnapshot(
+            notesCollection,
+            function (snapshot: QuerySnapshot<DocumentData, DocumentData>) {
+                // Sync up our local notes array with the snapshot data
+                const notesArr = snapshot.docs.map((doc) => {
+                    const { body, createdAt, updatedAt } = doc.data();
+                    return { body, createdAt, updatedAt, id: doc.id };
+                });
+                notesArr.sort((note1, note2) => {
+                    return (note2.updatedAt - note1.updatedAt);
+                });
+                setNotes(notesArr);
+            }
+        );
         return unSubscribe;
     }, []);
 
@@ -65,16 +67,13 @@ export default function App(): React.ReactNode {
         }
 
         const newNoteRef = await addDoc(notesCollection, newNote);
-
-        // setNotes((prevNotes) => [newNote, ...prevNotes])
         setCurrentNoteId(newNoteRef.id)
-
     }
 
     async function updateNote(text: string): Promise<void> {
         const docRef = doc(db, "notes", currentNoteId);
-        await setDoc(docRef, { body: text, updatedAt: Date.now() }); // overwriting the whole document data.
-        // await setDoc(docRef, {body: text}, {merge: true});  // merging data with the document data.
+        // await setDoc(docRef, { body: text, updatedAt: Date.now() }); // overwriting the whole document data.
+        await setDoc(docRef, { body: text, updatedAt: Date.now() }, { merge: true });  // merging data with the document data.
     }
 
     async function deleteNote(noteId: string): Promise<void> {
