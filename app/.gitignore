@@ -1,3 +1,11 @@
+/app/src/module4-notes-app/firebase.ts
+
+**/*.firebase*
+**/*firebase*
+
+**/*.firestore*
+**/*firestore*
+
 # Logs
 logs
 *.log
