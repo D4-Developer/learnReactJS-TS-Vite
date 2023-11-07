@@ -11,7 +11,7 @@ export default function Sidebar(props: {
 	},
 	setCurrentNoteId: React.Dispatch<React.SetStateAction<string>>,
 	newNote: () => void,
-	deleteNote: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>, noteId: string) => void
+	deleteNote: (noteId: string) => void
 }): React.ReactNode {
 	const noteElements = props.notes.map((note, _index) => (
 		<div key={note.id}>
@@ -24,7 +24,7 @@ export default function Sidebar(props: {
 				<h4 className="text-snippet">{note.body.split("\n")[0]}</h4>
 				<button
 					className="delete-btn"
-					onClick={(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => props.deleteNote(event, note.id)
+					onClick={(_: React.MouseEvent<HTMLButtonElement, MouseEvent>) => props.deleteNote(note.id)
 					}
 				>
 					<i className="gg-trash trash-icon"></i>
