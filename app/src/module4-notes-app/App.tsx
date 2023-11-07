@@ -1,16 +1,15 @@
 import React, { Dispatch, SetStateAction } from "react"
 import Split from "react-split"
 import { nanoid } from "nanoid"
+import { onSnapshot, QuerySnapshot, DocumentData } from "firebase/firestore"
 
 import './App.css'
 import Sidebar from "./components/Sidebar"
 import Editor from "./components/Editor"
+import { notesCollection } from "./firebase"
+import { unsubscribe } from "diagnostics_channel"
+import { unescape } from "querystring"
 
-/**
- * Challenge: Try to figure out a way to display only the 
- * first line of note.body as the note summary in the
- * sidebar.
- */
 
 export default function App(): React.ReactNode {
     const [notes, setNotes]: [{
@@ -22,11 +21,17 @@ export default function App(): React.ReactNode {
     }[]>>] = React.useState(() => JSON.parse(localStorage.getItem("notes")!) || [{ id: "0", body: "first note" }]);
 
     React.useEffect(() => {
-        localStorage.setItem("notes", JSON.stringify(notes))
+        const unSubscribe = onSnapshot(notesCollection, function (snapshot: QuerySnapshot<DocumentData, DocumentData>) {
+            // Sync up our local notes array with the snapshot data
+
+            console.log("THINGS ARE CHANGING!");
+        })
+
+        return unSubscribe;
     }, [notes])
 
     const [currentNoteId, setCurrentNoteId]: [string, Dispatch<SetStateAction<string>>] = React.useState(
-        (notes[0] && notes[0].id) || ""
+        (notes[0]?.id) || ""
     )
 
     const currentNote: {
