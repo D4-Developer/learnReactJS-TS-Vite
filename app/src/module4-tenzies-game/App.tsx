@@ -3,20 +3,33 @@ import Die from "./components/Die";
 
 export default function App(): React.ReactNode {
 
+	const dieValues: number[] = [];
+
+	function allNewDice() {
+		for (let index = 0; index < 10; index++) {
+			dieValues.push(Math.ceil(Math.random() * 6));
+		}
+	}
+
+	allNewDice();
+
+	console.log(dieValues);
+
+
 	return (
 		<main>
 			<div className="container">
 				<div className="grid">
-					<Die value={1} />
-					<Die value={2} />
-					<Die value={3} />
-					<Die value={4} />
-					<Die value={5} />
-					<Die value={6} />
-					<Die value={7} />
-					<Die value={8} />
-					<Die value={9} />
-					<Die value={10} />
+					<Die value={dieValues[0]} />
+					<Die value={dieValues[1]} />
+					<Die value={dieValues[2]} />
+					<Die value={dieValues[3]} />
+					<Die value={dieValues[4]} />
+					<Die value={dieValues[5]} />
+					<Die value={dieValues[6]} />
+					<Die value={dieValues[7]} />
+					<Die value={dieValues[8]} />
+					<Die value={dieValues[9]} />
 				</div>
 			</div>
 		</main>
