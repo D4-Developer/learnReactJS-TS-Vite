@@ -1,7 +1,6 @@
 import React, { Dispatch, SetStateAction } from "react"
 import Split from "react-split"
-import { nanoid } from "nanoid"
-import { onSnapshot, QuerySnapshot, DocumentData, addDoc, doc, deleteDoc } from "firebase/firestore"
+import { onSnapshot, QuerySnapshot, DocumentData, addDoc, doc, deleteDoc, setDoc } from "firebase/firestore"
 
 import './App.css'
 import Sidebar from "./components/Sidebar"
@@ -12,7 +11,9 @@ import { db, notesCollection } from "./firebase"
 export default function App(): React.ReactNode {
     const [notes, setNotes]: [{
         id: string;
-        body: string
+        body: string;
+        createdAt: number;
+        updatedAt: number;
     }[] | [], Dispatch<SetStateAction<{
         id: string;
         body: string
@@ -46,7 +47,6 @@ export default function App(): React.ReactNode {
         }
     }, [notes]);
 
-
     const currentNote: {
         id: string,
         body: string
@@ -55,9 +55,13 @@ export default function App(): React.ReactNode {
     async function createNewNote(): Promise<void> {
         const newNote: {
             id?: string,
-            body: string
+            body: string,
+            createdAt: number,
+            updatedAt: number
         } = {
-            body: "# Type your markdown note's title here"
+            body: "# Type your markdown note's title here",
+            createdAt: Date.now(),
+            updatedAt: Date.now()
         }
 
         const newNoteRef = await addDoc(notesCollection, newNote);
@@ -67,23 +71,10 @@ export default function App(): React.ReactNode {
 
     }
 
-    function updateNote(text: string): void {
-        setNotes(oldNotes => {
-            const index = notes.findIndex(note => {
-                return note.id === currentNoteId
-            });
-
-            const newNote = {
-                id: currentNote.id,
-                body: text
-            }
-
-            if (index == 0) {
-                return [newNote, ...oldNotes.slice(index + 1)];
-            } else {
-                return [newNote, ...oldNotes.slice(0, index), ...oldNotes.slice(index + 1)];
-            }
-        });
+    async function updateNote(text: string): Promise<void> {
+        const docRef = doc(db, "notes", currentNoteId);
+        await setDoc(docRef, { body: text, updatedAt: Date.now() }); // overwriting the whole document data.
+        // await setDoc(docRef, {body: text}, {merge: true});  // merging data with the document data.
     }
 
     async function deleteNote(noteId: string): Promise<void> {
