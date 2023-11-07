@@ -9,6 +9,7 @@ export default function Sidebar(props: {
 		id: string;
 		body: string;
 	},
+	tempNoteText: string,
 	setCurrentNoteId: React.Dispatch<React.SetStateAction<string>>,
 	newNote: () => void,
 	deleteNote: (noteId: string) => void
@@ -21,7 +22,7 @@ export default function Sidebar(props: {
 					}`}
 				onClick={() => props.setCurrentNoteId(note.id)}
 			>
-				<h4 className="text-snippet">{note.body.split("\n")[0]}</h4>
+				<h4 className="text-snippet">{note.id === props.currentNote.id ? props.tempNoteText.split("\n")[0] : note.body.split("\n")[0]}</h4>
 				<button
 					className="delete-btn"
 					onClick={(_: React.MouseEvent<HTMLButtonElement, MouseEvent>) => props.deleteNote(note.id)

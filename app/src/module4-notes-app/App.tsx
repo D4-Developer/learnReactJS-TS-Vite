@@ -7,6 +7,23 @@ import Sidebar from "./components/Sidebar"
 import Editor from "./components/Editor"
 import { db, notesCollection } from "./firebase"
 
+/**
+ * Challenge:
+ * 1. Set up a new state variable called `tempNoteText`. Initialize 
+ *    it as an empty string
+ * 2. Change the Editor so that it uses `tempNoteText` and 
+ *    `setTempNoteText` for displaying and changing the text instead
+ *    of dealing directly with the `currentNote` data.
+ * 3. Create a useEffect that, if there's a `currentNote`, sets
+ *    the `tempNoteText` to `currentNote.body`. (This copies the
+ *    current note's text into the `tempNoteText` field so whenever 
+ *    the user changes the currentNote, the editor can display the 
+ *    correct text.
+ * 4. Create an effect that runs any time the tempNoteText changes
+ *    Delay the sending of the request to Firebase
+ *    uses setTimeout
+ *    use clearTimeout to cancel the timeout
+ */
 
 export default function App(): React.ReactNode {
     const [notes, setNotes]: [{
@@ -14,23 +31,28 @@ export default function App(): React.ReactNode {
         body: string;
         createdAt: number;
         updatedAt: number;
-    }[] | [], Dispatch<SetStateAction<{
-        id: string;
-        body: string;
-        createdAt: number;
-        updatedAt: number;
-    }[]>> | Dispatch<SetStateAction<[]>>] = React.useState([]);
+    }[] | [], Dispatch<SetStateAction<any[]>>] = React.useState<any[]>(() => []);
 
     const [currentNoteId, setCurrentNoteId]: [string, Dispatch<SetStateAction<string>>] = React.useState("");
 
-    console.log(currentNoteId);
+    const [tempNoteText, setTempNoteText] = React.useState("");
+
+    const currentNote: {
+        id: string,
+        body: string
+    } = notes.find(note => note.id === currentNoteId) || notes[0];
 
     React.useEffect(() => {
         const unSubscribe = onSnapshot(
             notesCollection,
             function (snapshot: QuerySnapshot<DocumentData, DocumentData>) {
                 // Sync up our local notes array with the snapshot data
-                const notesArr = snapshot.docs.map((doc) => {
+                const notesArr: {
+                    id: string;
+                    body: string;
+                    createdAt: number;
+                    updatedAt: number;
+                }[] = snapshot.docs.map((doc) => {
                     const { body, createdAt, updatedAt } = doc.data();
                     return { body, createdAt, updatedAt, id: doc.id };
                 });
@@ -49,10 +71,23 @@ export default function App(): React.ReactNode {
         }
     }, [notes]);
 
-    const currentNote: {
-        id: string,
-        body: string
-    } = notes.find(note => note.id === currentNoteId) || notes[0]
+    React.useEffect(() => {
+        if (currentNote) {
+            setTempNoteText(currentNote.body);
+        }
+    }, [currentNote]);
+
+    React.useEffect(() => {
+        const timeoutId = setTimeout(() => {
+            if (tempNoteText !== currentNote.body) {
+                updateNote(tempNoteText)
+            }
+        }, 500);
+
+        return () => {
+            clearTimeout(timeoutId)
+        };
+    }, [tempNoteText]);
 
     async function createNewNote(): Promise<void> {
         const newNote: {
@@ -94,13 +129,14 @@ export default function App(): React.ReactNode {
                         <Sidebar
                             notes={notes}
                             currentNote={currentNote}
+                            tempNoteText={tempNoteText}
                             setCurrentNoteId={setCurrentNoteId}
                             newNote={createNewNote}
                             deleteNote={deleteNote}
                         />
                         <Editor
-                            currentNote={currentNote}
-                            updateNote={updateNote}
+                            tempNoteText={tempNoteText}
+                            setTempNoteText={setTempNoteText}
                         />
                     </Split>
                     :
