@@ -1,25 +1,31 @@
 import React, { Dispatch, SetStateAction } from "react";
+import { nanoid } from "nanoid"
 
 import "./App.css"
 import Die from "./components/Die";
 
 /**
- * Challenge: Add conditional styling to the Die component
- * so that if it's held (isHeld === true), its background color
- * changes to a light green (#59E391)
+ * Challenge: Create a function `holdDice` that takes
+ * `id` as a parameter. For now, just have the function
+ * console.log(id).
  * 
- * Remember: currently the Die component has no way of knowing
- * if it's "held" or not.
+ * Then, figure out how to pass that function down to each
+ * instance of the Die component so when each one is clicked,
+ * it logs its own unique ID property. (Hint: there's more
+ * than one way to make that work, so just choose whichever
+ * you want)
+ * 
  */
 
 export default function App(): React.ReactNode {
 
-	function allNewDice(): { value: number, isHeld: boolean }[] {
-		const dieValues: { value: number, isHeld: boolean }[] = [];
+	function allNewDice(): { id: string, value: number, isHeld: boolean }[] {
+		const dieValues: { id: string, value: number, isHeld: boolean }[] = [];
 		for (let index = 0; index < 10; index++) {
 			const diceObj = {
 				value: Math.ceil(Math.random() * 6),
-				isHeld: false
+				isHeld: false,
+				id: nanoid()
 			}
 			dieValues.push(diceObj);
 		}
@@ -28,8 +34,8 @@ export default function App(): React.ReactNode {
 	}
 
 	const [dice, setDice]: [
-		{ value: number, isHeld: boolean }[],
-		Dispatch<SetStateAction<{ value: number, isHeld: boolean }[]>>] = React.useState(() => allNewDice());
+		{ id: string, value: number, isHeld: boolean }[],
+		Dispatch<SetStateAction<{ id: string, value: number, isHeld: boolean }[]>>] = React.useState(() => allNewDice());
 
 	console.log(dice);
 
@@ -37,7 +43,7 @@ export default function App(): React.ReactNode {
 		setDice(allNewDice());
 	}
 
-	function heldToggle(diceNumber: number): void {
+	function holdToggle(diceNumber: number): void {
 		setDice((oldDices) => {
 			oldDices[diceNumber].isHeld = !oldDices[diceNumber].isHeld;
 			return [...oldDices];
@@ -50,11 +56,11 @@ export default function App(): React.ReactNode {
 				{
 					dice.map((die, idx) => (
 						<Die
-							key={idx}
+							key={die.id}
 							value={die.value}
 							index={idx}
 							isHeld={die.isHeld}
-							heldToggle={heldToggle}
+							holdToggle={() => holdToggle(idx)}
 						/>)
 					)
 				}
