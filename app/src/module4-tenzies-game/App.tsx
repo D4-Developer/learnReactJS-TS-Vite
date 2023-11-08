@@ -1,16 +1,18 @@
 import React, { Dispatch, SetStateAction } from "react";
 import { nanoid } from "nanoid"
+import Confetti from 'react-confetti'
 
 import "./App.css"
 import Die from "./components/Die";
 
 /**
- * Challenge: Check the dice array for these winning conditions:
- * 1. All dice are held, and
- * 2. all dice have the same value
+ * Challenge: Tie off loose ends!
+ * 1. If tenzies is true, Change the button text to "New Game"
+ * 2. If tenzies is true, use the "react-confetti" package to
+ *    render the <Confetti /> component 🎉
  * 
- * If both conditions are true, set `tenzies` to true and log
- * "You won!" to the console
+ *    Hint: don't worry about the `height` and `width` props
+ *    it mentions in the documentation.
  */
 
 export default function App(): React.ReactNode {
@@ -40,8 +42,6 @@ export default function App(): React.ReactNode {
 	const [tenzies, setTenzies]: [boolean, Dispatch<SetStateAction<boolean>>] = React.useState(false);
 
 	React.useEffect(() => {
-		console.log(dice);
-
 		const firstVal = dice[0].value;
 		const firstHeld = dice[0].isHeld;
 		let isPrevSame = true;
@@ -64,6 +64,12 @@ export default function App(): React.ReactNode {
 	}, [dice]);
 
 	function rolledDice(): void {
+		if (tenzies) {
+			setTenzies(false);
+			setDice(allNewDice());
+			return;
+		}
+
 		setDice((oldDices) => {
 			return oldDices.map((dice) => {
 				return dice.isHeld ? dice : generateNewDie();
@@ -80,6 +86,7 @@ export default function App(): React.ReactNode {
 
 	return (
 		<main>
+			{tenzies && <Confetti />}
 			<h1 className="title">Tenzies</h1>
 			<p className="instructions">Roll until all dice are the same. Click each die to freeze it at its current value between rolls.</p>
 			<div className="grid">
@@ -99,7 +106,7 @@ export default function App(): React.ReactNode {
 				className="roll-btn"
 				onClick={rolledDice}
 			>
-				Roll
+				{tenzies ? "New Game" : "Roll"}
 			</button>
 		</main>
 	);
