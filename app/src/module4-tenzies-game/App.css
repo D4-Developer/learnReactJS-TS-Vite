@@ -42,6 +42,10 @@ main {
             font-size: 2rem;
         }
     }
+
+    .die-face.held {
+        background-color: #59E391;
+    }
 }
 
 .roll-btn {

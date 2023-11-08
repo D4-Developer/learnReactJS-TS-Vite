@@ -4,12 +4,12 @@ import "./App.css"
 import Die from "./components/Die";
 
 /**
- * Challenge: Update the array of numbers in state to be
- * an array of objects instead. Each object should look like:
- * { value: <random number>, isHeld: false }
+ * Challenge: Add conditional styling to the Die component
+ * so that if it's held (isHeld === true), its background color
+ * changes to a light green (#59E391)
  * 
- * Making this change will break parts of our code, so make
- * sure to update things so we're back to a working state
+ * Remember: currently the Die component has no way of knowing
+ * if it's "held" or not.
  */
 
 export default function App(): React.ReactNode {
@@ -37,10 +37,27 @@ export default function App(): React.ReactNode {
 		setDice(allNewDice());
 	}
 
+	function heldToggle(diceNumber: number): void {
+		setDice((oldDices) => {
+			oldDices[diceNumber].isHeld = !oldDices[diceNumber].isHeld;
+			return [...oldDices];
+		});
+	}
+
 	return (
 		<main>
 			<div className="grid">
-				{dice.map((die, idx) => <Die key={idx} value={die.value} />)}
+				{
+					dice.map((die, idx) => (
+						<Die
+							key={idx}
+							value={die.value}
+							index={idx}
+							isHeld={die.isHeld}
+							heldToggle={heldToggle}
+						/>)
+					)
+				}
 			</div>
 			<button
 				className="roll-btn"
