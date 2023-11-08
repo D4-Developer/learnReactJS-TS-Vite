@@ -4,26 +4,32 @@ import "./App.css"
 import Die from "./components/Die";
 
 /**
- * Challenge: Create a `Roll Dice` button that will re-roll
- * all 10 dice
+ * Challenge: Update the array of numbers in state to be
+ * an array of objects instead. Each object should look like:
+ * { value: <random number>, isHeld: false }
  * 
- * Clicking the button should generate a new array of numbers
- * and set the `dice` state to that new array (thus re-rendering
- * the array to the page)
+ * Making this change will break parts of our code, so make
+ * sure to update things so we're back to a working state
  */
 
 export default function App(): React.ReactNode {
 
-	function allNewDice(): number[] {
-		const dieValues: number[] = [];
+	function allNewDice(): { value: number, isHeld: boolean }[] {
+		const dieValues: { value: number, isHeld: boolean }[] = [];
 		for (let index = 0; index < 10; index++) {
-			dieValues.push(Math.ceil(Math.random() * 6));
+			const diceObj = {
+				value: Math.ceil(Math.random() * 6),
+				isHeld: false
+			}
+			dieValues.push(diceObj);
 		}
 
 		return dieValues;
 	}
 
-	const [dice, setDice]: [number[], Dispatch<SetStateAction<number[]>>] = React.useState(() => allNewDice());
+	const [dice, setDice]: [
+		{ value: number, isHeld: boolean }[],
+		Dispatch<SetStateAction<{ value: number, isHeld: boolean }[]>>] = React.useState(() => allNewDice());
 
 	console.log(dice);
 
@@ -34,7 +40,7 @@ export default function App(): React.ReactNode {
 	return (
 		<main>
 			<div className="grid">
-				{dice.map((die, idx) => <Die key={idx} value={die} />)}
+				{dice.map((die, idx) => <Die key={idx} value={die.value} />)}
 			</div>
 			<button
 				className="roll-btn"
